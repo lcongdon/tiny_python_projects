@@ -7,6 +7,7 @@ Purpose: Tiny Python Project Twelve Days of Christmas exercise
 
 import argparse
 import sys
+import emoji
 
 
 def get_args():
@@ -27,6 +28,13 @@ def get_args():
     )
 
     parser.add_argument(
+        "-e",
+        "--emoji",
+        action="store_true",
+        help="Use emoji in output"
+    )
+
+    parser.add_argument(
         "-o",
         "--outfile",
         default=sys.stdout,
@@ -43,7 +51,7 @@ def get_args():
     return args
 
 
-def verse(day):
+def verse(day, emoji_flag=False):
     """Return the verse for day"""
     ordinal = [
         "first",
@@ -74,14 +82,33 @@ def verse(day):
         "Twelve drummers drumming,",
     ]
     alt_phrase = "A partridge in a pear tree."
+    emoji_phrase = [
+        "And a :bird: in a pear tree.",
+        "Two turtle :dove:s,",
+        "Three French :chicken:s,",
+        "Four calling birds,",
+        "Five gold :ring:s,",
+        "Six :bird:s a laying,",
+        "Seven :swan:s a swimming,",
+        "Eight :woman: milking,",
+        "Nine :woman: dancing,",
+        "Ten :man: a leaping,",
+        "Eleven :man: piping,",
+        "Twelve :drum:s drumming,",
+    ]
+    emoji_alt_phrase = "A :bird: in a pear tree."
 
     result = [
         f"On the {ordinal[day - 1]} day of Christmas,",
         "My true love gave to me,",
     ]
-
-    result.extend(reversed(phrase[1:day]))
-    result.append(f"{phrase[0] if day != 1 else alt_phrase}")
+    if not emoji_flag:
+        result.extend(reversed(phrase[1:day]))
+        result.append(f"{phrase[0] if day != 1 else alt_phrase}")
+    else:
+        result.extend(map(emoji.emojize, reversed(emoji_phrase[1:day])))
+        result.append(
+            f"{emoji.emojize(emoji_phrase[0]) if day != 1 else emoji.emojize(emoji_alt_phrase)}")
     return "\n".join(result)
 
 
@@ -109,7 +136,7 @@ def main():
     args = get_args()
     # for day in range(1, args.num + 1):
     #     print(verse(day), end='\n\n')
-    args.outfile.write("\n\n".join(verse(day) for day in range(1, args.num + 1)) + "\n")
+    args.outfile.write("\n\n".join(verse(day, args.emoji) for day in range(1, args.num + 1)) + "\n")
 
 
 if __name__ == "__main__":
