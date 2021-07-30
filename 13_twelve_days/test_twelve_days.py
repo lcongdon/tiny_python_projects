@@ -6,6 +6,8 @@ import random
 import re
 import string
 from subprocess import getstatusoutput, getoutput
+import emoji
+from emoji.core import emojize
 
 prg = './twelve_days.py'
 day_one = '\n'.join([
@@ -20,6 +22,19 @@ day_two = '\n'.join([
     'And a partridge in a pear tree.'
 ])
 
+day_one_emoji = '\n'.join(map(emoji.emojize, [
+    'On the first day of Christmas,', 'My true love gave to me,',
+    'A :bird: in a pear tree.'
+]))
+
+day_two_emoji = '\n'.join(map(emoji.emojize, [
+    'On the second day of Christmas,',
+    'My true love gave to me,',
+    'Two turtle :dove:s,',
+    'And a :bird: in a pear tree.'
+]))
+
+prg = './twelve_days.py'
 
 # --------------------------------------------------
 def test_exists():
@@ -62,6 +77,13 @@ def test_two():
 
     out = getoutput(f'{prg} --num 2')
     assert out == '\n\n'.join([day_one, day_two])
+
+# --------------------------------------------------
+def test_emoji():
+    """test emoji"""
+
+    out = getoutput(f'{prg} --num 2 -e')
+    assert out == '\n\n'.join([day_one_emoji, day_two_emoji])
 
 
 # --------------------------------------------------
