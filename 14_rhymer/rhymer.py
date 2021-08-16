@@ -7,11 +7,11 @@ Purpose: Tiny Python Projects rhymer exercise
 
 import argparse
 import re
-import string as s
+import string
 
 VOWELS = "aeiou"
-CONSONANTS = "".join([c for c in s.ascii_lowercase if c not in VOWELS])
-PREFIXES = [
+CONSONANTS = "".join([char for char in string.ascii_lowercase if char not in VOWELS])
+GROUPS = [
     "bl",
     "br",
     "ch",
@@ -94,7 +94,7 @@ def stemmer(word):
     """Return leading consonants (if any), and 'stem' of word"""
     pattern = f"([{CONSONANTS}]+)?([{VOWELS}])(.*)"
     word = word.lower()
-    match = re.match(pattern, word, re.IGNORECASE)
+    match = re.match(pattern, word)
     if match:
         part1 = match.group(1) or ""
         part2 = match.group(2) or ""
@@ -117,12 +117,14 @@ def test_stemmer():
 def main():
 
     """Main program"""
-    print(test_stemmer(''))
     args = get_args()
     pos_arg = args.word
-
-    print(f'word = "{pos_arg}"')
-
+    prefixes = list(CONSONANTS) + GROUPS
+    first_part, second_part = stemmer(pos_arg)
+    if second_part:
+       print('\n'.join(sorted([prefix + second_part for prefix in prefixes if prefix != first_part])))
+    else:
+        print(f'Cannot rhyme "{pos_arg}"')
 
 if __name__ == "__main__":
     main()
