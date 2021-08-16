@@ -28,10 +28,7 @@ def get_args():
     )
 
     parser.add_argument(
-        "-e",
-        "--emoji",
-        action="store_true",
-        help="Use emoji in output"
+        "-e", "--emoji", action="store_true", help="Use emoji in output"
     )
 
     parser.add_argument(
@@ -108,7 +105,8 @@ def verse(day, emoji_flag=False):
     else:
         result.extend(map(emoji.emojize, reversed(emoji_phrase[1:day])))
         result.append(
-            f"{emoji.emojize(emoji_phrase[0]) if day != 1 else emoji.emojize(emoji_alt_phrase)}")
+            f"{emoji.emojize(emoji_phrase[0]) if day != 1 else emoji.emojize(emoji_alt_phrase)}"
+        )
     return "\n".join(result)
 
 
@@ -136,7 +134,9 @@ def main():
     args = get_args()
     # for day in range(1, args.num + 1):
     #     print(verse(day), end='\n\n')
-    args.outfile.write("\n\n".join(verse(day, args.emoji) for day in range(1, args.num + 1)) + "\n")
+    args.outfile.write(
+        "\n\n".join(verse(day, args.emoji) for day in range(1, args.num + 1)) + "\n"
+    )
 
 
 if __name__ == "__main__":
