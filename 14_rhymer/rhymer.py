@@ -2,7 +2,7 @@
 """
 Author : Lee A. Congdon <lee@lcongdon.com>
 Date   : 2021-08-16
-Purpose: Rock the Casbah
+Purpose: Tiny Python Projects rhymer exercise
 """
 
 import argparse
@@ -12,65 +12,90 @@ def get_args():
     """Parse arguments"""
 
     parser = argparse.ArgumentParser(
-        description='Rock the Casbah',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        description="Make rhyming 'words'", formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
 
+    # parser.add_argument('-a',
+    #                     '--arg',
+    #                     default='',
+    #                     type=str,
+    #                     help='A named string argument',
+    #                     metavar='str')
 
-    parser.add_argument('-a',
-                        '--arg',
-                        default='',
-                        type=str,
-                        help='A named string argument',
-                        metavar='str')
+    # parser.add_argument('-i',
+    #                     '--int',
+    #                     default=0,
+    #                     type=int,
+    #                     help='A named integer argument',
+    #                     metavar='int')
 
+    # parser.add_argument('-f',
+    #                     '--file',
+    #                     default=None,
+    #                     type=argparse.FileType('rt'),
+    #                     help='A readable file',
+    #                     metavar='FILE')
 
-    parser.add_argument('-i',
-                        '--int',
-                        default=0,
-                        type=int,
-                        help='A named integer argument',
-                        metavar='int')
+    # parser.add_argument('-o',
+    #                     '--on',
+    #                     action='store_true',
+    #                     help='A boolean flag')
 
-
-    parser.add_argument('-f',
-                        '--file',
-                        default=None,
-                        type=argparse.FileType('rt'),
-                        help='A readable file',
-                        metavar='FILE')
-
-
-    parser.add_argument('-o',
-                        '--on',
-                        action='store_true',
-                        help='A boolean flag')
-
-
-    parser.add_argument('positional',
-                        nargs='+',
-                        help='A positional argument',
-                        metavar='str')
-
+    parser.add_argument("word", help="Word to rhyme", metavar="word")
 
     return parser.parse_args()
 
 
 def main():
+
+    prefixes = [
+        "bl",
+        "br",
+        "ch",
+        "cl",
+        "cr",
+        "dr",
+        "fl",
+        "fr",
+        "gl",
+        "gr",
+        "pl",
+        "pr",
+        "sc",
+        "sh",
+        "sk",
+        "sl",
+        "sm",
+        "sn",
+        "sp",
+        "st",
+        "sw",
+        "th",
+        "tr",
+        "tw",
+        "thw",
+        "wh",
+        "wr",
+        "sch",
+        "scr",
+        "shr",
+        "sph",
+        "spl",
+        "spr",
+        "squ",
+        "str",
+        "thr",
+    ]
+    consonants = [
+
+    ]
     """Main program"""
 
     args = get_args()
-    str_arg = args.arg
-    int_arg = args.int
-    file_arg = args.file
-    flag_arg = args.on
-    pos_arg = args.positional
+    pos_arg = args.word
 
-    print(f'str_arg = "{str_arg}"')
-    print(f'int_arg = "{int_arg}"')
-    print('file_arg = "{}"'.format(file_arg.name if file_arg else ''))
-    print(f'flag_arg = "{flag_arg}"')
-    print(f'positional = "{pos_arg}"')
+    print(f'word = "{pos_arg}"')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
