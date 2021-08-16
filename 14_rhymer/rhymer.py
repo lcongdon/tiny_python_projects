@@ -6,6 +6,7 @@ Purpose: Tiny Python Projects rhymer exercise
 """
 
 import argparse
+from re import S
 
 
 def get_args():
@@ -45,6 +46,18 @@ def get_args():
 
     return parser.parse_args()
 
+def stemmer(word):
+    """Return leading consonants (if any), and 'stem' of word"""
+    pass
+
+def test_stemmer():
+    """Test stemmer"""
+    assert stemmer('') == ('', '')
+    assert stemmer('cake') == ('c', 'ake')
+    assert stemmer('chair') == ('ch', 'air')
+    assert stemmer('APPLE') == ('', 'apple')
+    assert stemmer('RDZNL') == ('rdznl', '')
+    assert stemmer('123') == ('123', '')
 
 def main():
 
