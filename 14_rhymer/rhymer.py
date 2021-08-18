@@ -6,6 +6,7 @@ Purpose: Tiny Python Projects rhymer exercise
 """
 
 import argparse
+from asyncio.subprocess import STDOUT
 import re
 import string
 
@@ -73,12 +74,12 @@ def get_args():
     #                     help='A named integer argument',
     #                     metavar='int')
 
-    # parser.add_argument('-f',
-    #                     '--file',
-    #                     default=None,
-    #                     type=argparse.FileType('rt'),
-    #                     help='A readable file',
-    #                     metavar='FILE')
+    parser.add_argument('-o',
+                        '--outfile',
+                        default=STDOUT,
+                        type=argparse.FileType('wt'),
+                        help='Output file',
+                        metavar='FILE')
 
     # parser.add_argument('-o',
     #                     '--on',
