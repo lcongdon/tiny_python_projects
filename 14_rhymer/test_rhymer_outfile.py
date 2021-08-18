@@ -1,25 +1,27 @@
 #!/usr/bin/env python3
 """tests for rhymer.py outfile"""
 
-import os
 import random
 from subprocess import run
 import pytest
-import pathlib
 
 
 class TestRhymerOutfile:
-
     @pytest.fixture
     def program_name(self):
         """Name of program under test"""
-        return('./rhymer.py')
+        return "./rhymer.py"
 
     @pytest.fixture
     def output_parameter(self):
-        """Randomly either -o or --output"""
-        # return "-o" if random.randint(0, 1) else "--output"
-        return('--output')
+        """Randomly either -o or --outfile"""
+        return "-o" if random.randint(0, 1) else "--outfile"
+
+    @pytest.fixture
+    def random_consonants(self):
+        """Random string of consonants in mixed case"""
+        consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+        return "".join(random.sample(consonants, k=random.randint(4, 10)))
 
     def test_take(self, tmp_path, program_name, output_parameter):
         """leading consonant with output file"""
@@ -27,51 +29,89 @@ class TestRhymerOutfile:
         test_string = "take"
         out_path = tmp_path / (test_string + ".txt")
         test_return = run(
-            [f"{program_name}", f"{test_string}", f"{output_parameter}" f"{out_path}"],
+            f"{program_name} {test_string} {output_parameter} {out_path}",
             capture_output=True,
             text=True,
             shell=True,
         )
         assert test_return.returncode == 0
-        assert test_return.stdout == ''
-        assert test_return.stderr == ''
-        test_output = out_path.read_text()
+        assert test_return.stdout == ""
+        assert test_return.stderr == ""
+        test_output = out_path.read_text().split()
         assert len(test_output) == 56
         assert test_output[0] == "bake"
         assert test_output[-1] == "zake"
 
-    # # --------------------------------------------------
-    # def test_chair(tmp_path):
-    #     """consonant cluster"""
+    def test_chair(self, tmp_path, program_name, output_parameter):
+        """consonant cluster with output file"""
 
-    #     out = getoutput(f"{prg} chair").splitlines()
-    #     assert len(out) == 56
-    #     assert out[1] == "blair"
-    #     assert out[-2] == "yair"
+        test_string = "chair"
+        out_path = tmp_path / (test_string + ".txt")
+        test_return = run(
+            f"{program_name} {test_string} {output_parameter} {out_path}",
+            capture_output=True,
+            text=True,
+            shell=True,
+        )
+        assert test_return.returncode == 0
+        assert test_return.stdout == ""
+        assert test_return.stderr == ""
+        test_output = out_path.read_text().split()
+        assert len(test_output) == 56
+        assert test_output[1] == "blair"
+        assert test_output[-2] == "yair"
 
-    # # --------------------------------------------------
-    # def test_chair_uppercase(tmp_path):
-    #     """consonant cluster"""
+    def test_chair_uppercase(self, tmp_path, program_name, output_parameter):
+        """consonant cluster with output file in uppercase"""
 
-    #     out = getoutput(f"{prg} CHAIR").splitlines()
-    #     assert len(out) == 56
-    #     assert out[1] == "blair"
-    #     assert out[-2] == "yair"
+        test_string = "CHAIR"
+        out_path = tmp_path / (test_string + ".txt")
+        test_return = run(
+            f"{program_name} {test_string} {output_parameter} {out_path}",
+            capture_output=True,
+            text=True,
+            shell=True,
+        )
+        assert test_return.returncode == 0
+        assert test_return.stdout == ""
+        assert test_return.stderr == ""
+        test_output = out_path.read_text().split()
+        assert len(test_output) == 56
+        assert test_output[1] == "blair"
+        assert test_output[-2] == "yair"
 
-    # # --------------------------------------------------
-    # def test_apple(tmp_path):
-    #     """leading vowel"""
+    def test_apple(self, tmp_path, program_name, output_parameter):
+        """leading vowel with output file"""
 
-    #     out = getoutput(f"{prg} apple").splitlines()
-    #     assert len(out) == 57
-    #     assert out[10] == "flapple"
-    #     assert out[-10] == "thwapple"
+        test_string = "apple"
+        out_path = tmp_path / (test_string + ".txt")
+        test_return = run(
+            f"{program_name} {test_string} {output_parameter} {out_path}",
+            capture_output=True,
+            text=True,
+            shell=True,
+        )
+        assert test_return.returncode == 0
+        assert test_return.stdout == ""
+        assert test_return.stderr == ""
+        test_output = out_path.read_text().split()
+        assert len(test_output) == 57
+        assert test_output[10] == "flapple"
+        assert test_output[-10] == "thwapple"
 
-    # # --------------------------------------------------
-    # def test_no_vowels(tmp_path):
-    #     """no vowels"""
+    def test_no_vowels(
+        self, tmp_path, program_name, output_parameter, random_consonants
+    ):
+        """no vowels with output file"""
 
-    #     consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
-    #     bad = "".join(random.sample(consonants, k=random.randint(4, 10)))
-    #     out = getoutput(f"{prg} {bad}")
-    #     assert out == f'Cannot rhyme "{bad}"'
+        test_string = random_consonants
+        out_path = tmp_path / (test_string + ".txt")
+        test_return = run(
+            f"{program_name} {test_string} {output_parameter} {out_path}",
+            capture_output=True,
+            text=True,
+            shell=True,
+        )
+        assert test_return.returncode == 0
+        assert test_return.stdout == ""
+        assert test_return.stderr == f'Cannot rhyme "{test_string}"\n'

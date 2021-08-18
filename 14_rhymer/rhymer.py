@@ -5,8 +5,9 @@ Date   : 2021-08-16
 Purpose: Tiny Python Projects rhymer exercise
 """
 
+import sys
 import argparse
-from asyncio.subprocess import STDOUT
+from distutils.file_util import write_file
 import re
 import string
 
@@ -76,7 +77,7 @@ def get_args():
 
     parser.add_argument('-o',
                         '--outfile',
-                        default=STDOUT,
+                        default=sys.stdout,
                         type=argparse.FileType('wt'),
                         help='Output file',
                         metavar='FILE')
@@ -122,10 +123,11 @@ def main():
     pos_arg = args.word
     prefixes = list(CONSONANTS) + GROUPS
     first_part, second_part = stemmer(pos_arg)
-    if second_part:
-       print('\n'.join(sorted([prefix + second_part for prefix in prefixes if prefix != first_part])))
-    else:
-        print(f'Cannot rhyme "{pos_arg}"')
+    with args.outfile as outfile:
+        if second_part:
+            outfile.write('\n'.join(sorted([prefix + second_part for prefix in prefixes if prefix != first_part])))
+        else:
+            sys.stderr.write(f'Cannot rhyme "{pos_arg}"\n')
 
 if __name__ == "__main__":
     main()
