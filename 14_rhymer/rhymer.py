@@ -6,8 +6,9 @@ Purpose: Tiny Python Projects rhymer exercise
 """
 
 import sys
+import os
+import io
 import argparse
-from distutils.file_util import write_file
 import re
 import string
 
@@ -75,21 +76,51 @@ def get_args():
     #                     help='A named integer argument',
     #                     metavar='int')
 
-    parser.add_argument('-o',
-                        '--outfile',
-                        default=sys.stdout,
-                        type=argparse.FileType('wt'),
-                        help='Output file',
-                        metavar='FILE')
+    parser.add_argument(
+        "-o",
+        "--outfile",
+        default=sys.stdout,
+        type=argparse.FileType("wt"),
+        help="Output file",
+        metavar="FILE",
+    )
+    parser.add_argument(
+        "-d",
+        "--outdir",
+        help="Output directory",
+        metavar="str",
+        type=str,
+        default=None,
+    )
+    parser.add_argument(
+        "text",
+        help="Input text or file",
+        metavar="FILE",
+    )
 
     # parser.add_argument('-o',
     #                     '--on',
     #                     action='store_true',
     #                     help='A boolean flag')
 
-    parser.add_argument("word", help="Word to rhyme", metavar="word")
+    # parser.add_argument("word", help="Word to rhyme, ignored if infile provided", metavar="word", nargs='*')
 
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    args.handles = []
+    if os.path.isfile(args.text):
+        if args.outdir:
+            if not os.path.isdir(args.outdir):
+                os.mkdir(args.outdir)
+            for file in args.text:
+                basename = os.path.basename(file)
+                args.handles.append(
+                    (open(file), open(os.path.join(args.outdir, basename), "wt"))
+                )
+    else:
+        args.handles.append((io.StringIO(args.text + "\n"), args.outfile))
+
+    return args
 
 
 def stemmer(word):
@@ -119,15 +150,27 @@ def test_stemmer():
 def main():
 
     """Main program"""
-    args = get_args()
-    pos_arg = args.word
     prefixes = list(CONSONANTS) + GROUPS
-    first_part, second_part = stemmer(pos_arg)
-    with args.outfile as outfile:
-        if second_part:
-            outfile.write('\n'.join(sorted([prefix + second_part for prefix in prefixes if prefix != first_part])))
-        else:
-            sys.stderr.write(f'Cannot rhyme "{pos_arg}"\n')
+    args = get_args()
+    for infile, outfile in args.handles:
+        for line in infile:
+            word = line.rstrip()
+            first_part, second_part = stemmer(word)
+            if second_part:
+                outfile.write(
+                    "\n".join(
+                        sorted(
+                            [
+                                prefix + second_part
+                                for prefix in prefixes
+                                if prefix != first_part
+                            ]
+                        )
+                    )
+                )
+            else:
+                sys.stderr.write(f'Cannot rhyme "{word}"\n')
+
 
 if __name__ == "__main__":
     main()
