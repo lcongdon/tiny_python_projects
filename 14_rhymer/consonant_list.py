@@ -5,9 +5,14 @@ Date   : 2021-08-20
 Purpose: Build list of consonants exercise from Tiny Python Projects
 """
 
+import string
 import argparse
 import sys
+import re
 
+VOWELS = "aeiou"
+CONSONANTS = "".join(
+    [char for char in string.ascii_lowercase if char not in VOWELS])
 
 def get_args():
     """Parse arguments"""
@@ -30,13 +35,36 @@ def get_args():
 
     return parser.parse_args()
 
+def breaker(word):
+    """Break the word into vowel and consonant strings and return consonants"""
+    result = set()
+    # loop for the word parameter, finding consonant strings, drop trailing vowels
+    pattern = f"([{CONSONANTS}]+)?([{VOWELS}])(.*)"
+    word = word.lower()
+    match = re.match(pattern, word)
+    # if match, add to result set
+    return result
+
+def test_breaker():
+    """Test breaker"""
+    assert breaker("") == set()
+    assert breaker("cake") == {'c', 'k'}
+    assert breaker("chair") == {'ch', 'r'}
+    assert breaker("apple") == {'ppl'}
+    assert breaker("APPLE") == {'ppl'}
+    assert breaker('123') == set()
+    assert breaker('RDZNL') == {'rdznl'}
+
 
 def main():
     """Main program"""
 
     args = get_args()
-    print(args.infile)
-
+    consonants = set()
+    for line in args.infile:
+        for word in line.split():
+            consonants.update(breaker(word))
+    print(sorted(consonants) if consonants else "No consonants found")
 
 if __name__ == '__main__':
     main()
