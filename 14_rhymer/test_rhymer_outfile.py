@@ -112,6 +112,6 @@ class TestRhymerOutfile:
             text=True,
             shell=True,
         )
-        assert test_return.returncode == 0
+        assert test_return.returncode == 1
         assert test_return.stdout == ""
         assert test_return.stderr == f'Cannot rhyme "{test_string}"\n'

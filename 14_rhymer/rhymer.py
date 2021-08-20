@@ -7,13 +7,13 @@ Purpose: Tiny Python Projects rhymer exercise
 
 import sys
 import os
-import io
 import argparse
 import re
 import string
 
 VOWELS = "aeiou"
-CONSONANTS = "".join([char for char in string.ascii_lowercase if char not in VOWELS])
+CONSONANTS = "".join(
+    [char for char in string.ascii_lowercase if char not in VOWELS])
 GROUPS = [
     "bl",
     "br",
@@ -53,6 +53,8 @@ GROUPS = [
     "thr",
 ]
 
+PREFIXES = list(CONSONANTS) + GROUPS
+
 
 def get_args():
     """Parse arguments"""
@@ -84,42 +86,30 @@ def get_args():
         help="Output file",
         metavar="FILE",
     )
-    parser.add_argument(
-        "-d",
-        "--outdir",
-        help="Output directory",
-        metavar="str",
-        type=str,
-        default=None,
-    )
+    # parser.add_argument(
+    #     "-d",
+    #     "--outdir",
+    #     default = '.',
+    #     help="Output directory",
+    #     metavar="str",
+    #     type=str,
+    # )
     parser.add_argument(
         "text",
+        type=str,
         help="Input text or file",
-        metavar="FILE",
+        metavar="text",
     )
-
-    # parser.add_argument('-o',
-    #                     '--on',
-    #                     action='store_true',
-    #                     help='A boolean flag')
-
-    # parser.add_argument("word", help="Word to rhyme, ignored if infile provided", metavar="word", nargs='*')
 
     args = parser.parse_args()
 
     args.handles = []
     if os.path.isfile(args.text):
-        if args.outdir:
-            if not os.path.isdir(args.outdir):
-                os.mkdir(args.outdir)
-            for file in args.text:
-                basename = os.path.basename(file)
-                args.handles.append(
-                    (open(file), open(os.path.join(args.outdir, basename), "wt"))
-                )
+        for entry in open(args.text):
+            word = entry.rstrip()
+            args.handles.append((word, word + ".txt"))
     else:
-        args.handles.append((io.StringIO(args.text + "\n"), args.outfile))
-
+        args.handles.append((args.text, args.outfile))
     return args
 
 
@@ -148,28 +138,29 @@ def test_stemmer():
 
 
 def main():
-
     """Main program"""
-    prefixes = list(CONSONANTS) + GROUPS
+    exit_code = 0
     args = get_args()
-    for infile, outfile in args.handles:
-        for line in infile:
-            word = line.rstrip()
-            first_part, second_part = stemmer(word)
-            if second_part:
-                outfile.write(
-                    "\n".join(
-                        sorted(
-                            [
-                                prefix + second_part
-                                for prefix in prefixes
-                                if prefix != first_part
-                            ]
-                        )
+    for word, outfile in args.handles:
+        first_part, second_part = stemmer(word)
+        if second_part:
+            if isinstance(outfile, str):
+                outfile = open(outfile, "wt")
+            outfile.write(
+                "\n".join(
+                    sorted(
+                        [
+                            prefix + second_part
+                            for prefix in PREFIXES
+                            if prefix != first_part
+                        ]
                     )
                 )
-            else:
-                sys.stderr.write(f'Cannot rhyme "{word}"\n')
+            )
+        else:
+            sys.stderr.write(f'Cannot rhyme "{word}"\n')
+            exit_code = 1
+    sys.exit(exit_code)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 take
 chair
 CHAIR
-chat
+123
 apple
 fgh
-123
+chat
