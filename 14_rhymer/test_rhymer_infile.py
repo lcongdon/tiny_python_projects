@@ -115,7 +115,7 @@ class TestRhymerInfile:
         assert len(test_output_apple) == 57
         assert test_output_apple[10] == "flapple"
         assert test_output_apple[-10] == "thwapple"
-        
+
         q = p / "chat.txt"
         f = q.open()
         test_output_chat = f.read().split()
@@ -125,3 +125,49 @@ class TestRhymerInfile:
         assert test_output_chat[-3] == "xat"
 
 
+    def test_mixed_multi(self, program_name):
+        """test input file with mixed validity inputs, more than one per line"""
+
+        test_file = "infile_test_mixed_multi.txt"
+        test_return = run(
+            f"{program_name} {test_file}",
+            capture_output=True,
+            text=True,
+            shell=True,
+        )
+        assert test_return.returncode == 1
+        assert test_return.stdout == ""
+        assert test_return.stderr == 'Cannot rhyme "123"\nCannot rhyme "fgh"\n'
+
+        p = Path('.')
+        q = p / "take.txt"
+        f = q.open()
+        test_output_take = f.read().split()
+        f.close()
+        assert len(test_output_take) == 56
+        assert test_output_take[0] == "bake"
+        assert test_output_take[-1] == "zake"
+
+        q = p / "chair.txt"
+        f = q.open()
+        test_output_chair = f.read().split()
+        f.close()
+        assert len(test_output_chair) == 56
+        assert test_output_chair[1] == "blair"
+        assert test_output_chair[-2] == "yair"
+
+        q = p / "apple.txt"
+        f = q.open()
+        test_output_apple = f.read().split()
+        f.close()
+        assert len(test_output_apple) == 57
+        assert test_output_apple[10] == "flapple"
+        assert test_output_apple[-10] == "thwapple"
+
+        q = p / "chat.txt"
+        f = q.open()
+        test_output_chat = f.read().split()
+        f.close()
+        assert len(test_output_chat) == 56
+        assert test_output_chat[2] == "brat"
+        assert test_output_chat[-3] == "xat"
