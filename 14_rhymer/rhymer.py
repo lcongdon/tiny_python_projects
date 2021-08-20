@@ -105,9 +105,9 @@ def get_args():
 
     args.handles = []
     if os.path.isfile(args.text):
-        for entry in open(args.text):
-            word = entry.rstrip()
-            args.handles.append((word, word + ".txt"))
+        for line in open(args.text):
+            for word in line.split():
+                args.handles.append((word, word + ".txt"))
     else:
         args.handles.append((args.text, args.outfile))
     return args
