@@ -1,0 +1,7 @@
+take
+chair
+CHAIR
+123
+apple
+fgh
+chat
