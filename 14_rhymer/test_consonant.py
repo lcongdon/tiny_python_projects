@@ -17,12 +17,12 @@ class TestConsonant:
     @pytest.fixture
     def help_parameter(self):
         """Randomly either -h or --help"""
-        return random.choice(('-h', '--help'))
+        return random.choice(("-h", "--help"))
 
     @pytest.fixture
     def bad_parameter(self):
         """Bad parameter"""
-        return '--bad'
+        return "--bad"
 
     def test_exists(self, program_name):
         """exists"""
@@ -37,7 +37,7 @@ class TestConsonant:
             shell=True,
         )
         assert test_return.returncode == 0
-        assert test_return.stdout.lower().startswith('usage')
+        assert test_return.stdout.lower().startswith("usage")
         assert test_return.stderr == ""
 
     def test_bad(self, program_name, bad_parameter):
@@ -50,20 +50,7 @@ class TestConsonant:
         )
         assert test_return.returncode == 2
         assert test_return.stdout == ""
-        assert test_return.stderr.lower().startswith('usage')
-
-    def test_chat(self, program_name):
-        """test chat"""
-
-        test_return = run(
-            f"{program_name} 'chat'",
-            capture_output=True,
-            text=True,
-            shell=True,
-        )
-        assert test_return.returncode == 0
-        assert test_return.stdout == "ch\nt"
-        assert test_return.stderr == ""
+        assert test_return.stderr.lower().startswith("usage")
 
     def test_chat_file(self, program_name):
         """test chat in file"""
@@ -76,7 +63,7 @@ class TestConsonant:
             shell=True,
         )
         assert test_return.returncode == 0
-        assert test_return.stdout == "ch\nt"
+        assert test_return.stdout == "ch\nt\n"
         assert test_return.stderr == ""
 
     def test_basic_file_stdout(self, program_name):
@@ -90,11 +77,11 @@ class TestConsonant:
             shell=True,
         )
         assert test_return.returncode == 0
-        assert test_return.stdout.startswith('b')
-        assert test_return.stdout.endswith('z')
+        assert test_return.stdout.startswith("b\n")
+        assert test_return.stdout.endswith("z\n")
         assert test_return.stderr == ""
 
-    def test_basic_file(self, program_name, current_directory):
+    def test_basic_file(self, program_name):
         """test basic phrases in file"""
 
         test_file = "consonant_test_basic.txt"
@@ -109,10 +96,9 @@ class TestConsonant:
         assert test_return.stdout == ""
         assert test_return.stderr == ""
 
-        f = (current_directory / output_file).open()
+        f = open(output_file)
         test_output = f.read().split()
         f.close()
         assert len(test_output) == 57
         assert test_output[0] == "b"
         assert test_output[-1] == "z"
-
