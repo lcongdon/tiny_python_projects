@@ -2,6 +2,7 @@ bat
 blat
 brat
 cat
+chat
 clat
 crat
 dat

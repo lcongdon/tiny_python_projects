@@ -35,25 +35,21 @@ def get_args():
 
     return parser.parse_args()
 
-def breaker(word):
-    """Break the word into vowel and consonant strings and return consonants"""
-    result = set()
-    # loop for the word parameter, finding consonant strings, drop trailing vowels
-    pattern = f"([{CONSONANTS}]+)?([{VOWELS}])(.*)"
+def finder(word):
+    """Find the consonant strings in the word"""
+    pattern = re.compile(f"[{CONSONANTS}]+")
     word = word.lower()
-    match = re.match(pattern, word)
-    # if match, add to result set
-    return result
+    return re.findall(pattern, word)
 
-def test_breaker():
-    """Test breaker"""
-    assert breaker("") == set()
-    assert breaker("cake") == {'c', 'k'}
-    assert breaker("chair") == {'ch', 'r'}
-    assert breaker("apple") == {'ppl'}
-    assert breaker("APPLE") == {'ppl'}
-    assert breaker('123') == set()
-    assert breaker('RDZNL') == {'rdznl'}
+def test_finder():
+    """Test finder"""
+    assert finder("") == []
+    assert finder("cake") == ['c', 'k']
+    assert finder("chair") == ['ch', 'r']
+    assert finder("apple") == ['ppl']
+    assert finder("APPLE") == ['ppl']
+    assert finder('123') == []
+    assert finder('RDZNL') == ['rdznl']
 
 
 def main():
@@ -63,7 +59,7 @@ def main():
     consonants = set()
     for line in args.infile:
         for word in line.split():
-            consonants.update(breaker(word))
+            consonants.update(finder(word))
     print(sorted(consonants) if consonants else "No consonants found")
 
 if __name__ == '__main__':
