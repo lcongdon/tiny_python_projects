@@ -43,25 +43,25 @@ class TestRhymerInfile:
         f = q.open()
         test_output_take = f.read().split()
         f.close()
-        assert len(test_output_take) == 56
+        assert len(test_output_take) == 21
         assert test_output_take[0] == "bake"
-        assert test_output_take[-1] == "zake"
+        assert test_output_take[-1] == "wake"
 
         q = p / "chair.txt"
         f = q.open()
         test_output_chair = f.read().split()
         f.close()
-        assert len(test_output_chair) == 56
-        assert test_output_chair[1] == "blair"
-        assert test_output_chair[-2] == "yair"
+        assert len(test_output_chair) == 14
+        assert test_output_chair[1] == "fair"
+        assert test_output_chair[-2] == "vair"
 
         q = p / "apple.txt"
         f = q.open()
         test_output_apple = f.read().split()
         f.close()
-        assert len(test_output_apple) == 57
-        assert test_output_apple[10] == "flapple"
-        assert test_output_apple[-10] == "thwapple"
+        assert len(test_output_apple) == 8
+        assert test_output_apple[5] == "scrapple"
+        assert test_output_apple[-5] == "grapple"
 
     def test_bad(self, program_name):
         """test input file with only invalid inputs"""
@@ -96,32 +96,32 @@ class TestRhymerInfile:
         f = q.open()
         test_output_take = f.read().split()
         f.close()
-        assert len(test_output_take) == 56
+        assert len(test_output_take) == 21
         assert test_output_take[0] == "bake"
-        assert test_output_take[-1] == "zake"
+        assert test_output_take[-1] == "wake"
 
         q = p / "chair.txt"
         f = q.open()
         test_output_chair = f.read().split()
         f.close()
-        assert len(test_output_chair) == 56
-        assert test_output_chair[1] == "blair"
-        assert test_output_chair[-2] == "yair"
+        assert len(test_output_chair) == 14
+        assert test_output_chair[1] == "fair"
+        assert test_output_chair[-2] == "vair"
 
         q = p / "apple.txt"
         f = q.open()
         test_output_apple = f.read().split()
         f.close()
-        assert len(test_output_apple) == 57
-        assert test_output_apple[10] == "flapple"
-        assert test_output_apple[-10] == "thwapple"
+        assert len(test_output_apple) == 8
+        assert test_output_apple[5] == "scrapple"
+        assert test_output_apple[-5] == "grapple"
         
         q = p / "chat.txt"
         f = q.open()
         test_output_chat = f.read().split()
         f.close()
-        assert len(test_output_chat) == 56
-        assert test_output_chat[2] == "brat"
-        assert test_output_chat[-3] == "xat"
+        assert len(test_output_chat) == 45
+        assert test_output_chat[2] == "blat"
+        assert test_output_chat[-3] == "what"
 
 

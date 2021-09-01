@@ -29,9 +29,9 @@ def test_take():
     """leading consonant"""
 
     out = getoutput(f'{prg} take').splitlines()
-    assert len(out) == 56
-    assert out[0] == 'bake'
-    assert out[-1] == 'zake'
+    assert len(out) == 21
+    assert out[0] == "bake"
+    assert out[-1] == "wake"
 
 
 # --------------------------------------------------
@@ -39,9 +39,9 @@ def test_chair():
     """consonant cluster"""
 
     out = getoutput(f'{prg} chair').splitlines()
-    assert len(out) == 56
-    assert out[1] == 'blair'
-    assert out[-2] == 'yair'
+    assert len(out) == 14
+    assert out[1] == 'fair'
+    assert out[-2] == 'vair'
 
 
 # --------------------------------------------------
@@ -49,9 +49,9 @@ def test_chair_uppercase():
     """consonant cluster"""
 
     out = getoutput(f'{prg} CHAIR').splitlines()
-    assert len(out) == 56
-    assert out[1] == 'blair'
-    assert out[-2] == 'yair'
+    assert len(out) == 14
+    assert out[1] == 'fair'
+    assert out[-2] == 'vair'
 
 
 # --------------------------------------------------
@@ -59,9 +59,9 @@ def test_apple():
     """leading vowel"""
 
     out = getoutput(f'{prg} apple').splitlines()
-    assert len(out) == 57
-    assert out[10] == 'flapple'
-    assert out[-10] == 'thwapple'
+    assert len(out) == 8
+    assert out[5] == 'scrapple'
+    assert out[-5] == 'grapple'
 
 
 # --------------------------------------------------
