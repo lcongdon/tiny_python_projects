@@ -38,9 +38,9 @@ class TestRhymerOutfile:
         assert test_return.stdout == ""
         assert test_return.stderr == ""
         test_output = out_path.read_text().split()
-        assert len(test_output) == 56
+        assert len(test_output) == 21
         assert test_output[0] == "bake"
-        assert test_output[-1] == "zake"
+        assert test_output[-1] == "wake"
 
     def test_chair(self, tmp_path, program_name, output_parameter):
         """consonant cluster with output file"""
@@ -57,9 +57,9 @@ class TestRhymerOutfile:
         assert test_return.stdout == ""
         assert test_return.stderr == ""
         test_output = out_path.read_text().split()
-        assert len(test_output) == 56
-        assert test_output[1] == "blair"
-        assert test_output[-2] == "yair"
+        assert len(test_output) == 14
+        assert test_output[1] == "fair"
+        assert test_output[-2] == "vair"
 
     def test_chair_uppercase(self, tmp_path, program_name, output_parameter):
         """consonant cluster with output file in uppercase"""
@@ -76,9 +76,9 @@ class TestRhymerOutfile:
         assert test_return.stdout == ""
         assert test_return.stderr == ""
         test_output = out_path.read_text().split()
-        assert len(test_output) == 56
-        assert test_output[1] == "blair"
-        assert test_output[-2] == "yair"
+        assert len(test_output) == 14
+        assert test_output[1] == "fair"
+        assert test_output[-2] == "vair"
 
     def test_apple(self, tmp_path, program_name, output_parameter):
         """leading vowel with output file"""
@@ -95,9 +95,9 @@ class TestRhymerOutfile:
         assert test_return.stdout == ""
         assert test_return.stderr == ""
         test_output = out_path.read_text().split()
-        assert len(test_output) == 57
-        assert test_output[10] == "flapple"
-        assert test_output[-10] == "thwapple"
+        assert len(test_output) == 8
+        assert test_output[5] == "scrapple"
+        assert test_output[-5] == "grapple"
 
     def test_no_vowels(
         self, tmp_path, program_name, output_parameter, random_consonants
