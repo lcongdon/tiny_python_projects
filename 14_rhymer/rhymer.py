@@ -25,15 +25,15 @@ def get_args():
         "--outfile",
         default=sys.stdout,
         type=argparse.FileType("wt"),
-        help="Output file",
+        help="Output file, ignored if input file specified",
         metavar="FILE",
     )
 
     parser.add_argument(
         "-d",
         "--outdir",
-        default="./",
-        help="Output directory",
+        default=".",
+        help="Output directory when input file specified",
         metavar="dir",
     )
 
@@ -45,9 +45,8 @@ def get_args():
     )
 
     args = parser.parse_args()
-
     if os.path.isfile(args.text):
-        args.handles = [(entry.rstrip(), entry.rstrip() + ".txt")
+        args.handles = [(entry.rstrip(), args.outdir + "/" + entry.rstrip() + ".txt")
                         for entry in open(args.text)]
     else:
         args.handles = [(args.text, args.outfile)]
