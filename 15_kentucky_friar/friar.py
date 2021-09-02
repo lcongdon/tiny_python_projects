@@ -55,10 +55,7 @@ def main():
 
     args = get_args()
     for line in args.text.splitlines():
-        words = []
-        for word in re.split(r'(\W+)', line.rstrip()):
-            words.append(fry(word))
-        print(''.join(words))
+        print(''.join(map(fry, re.split(r'(\W+)', line.rstrip()))))
 
 if __name__ == '__main__':
     main()
