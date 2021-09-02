@@ -6,7 +6,6 @@ Purpose: Tiny Python Projects southern speech exercise
 """
 
 import os
-import io
 import argparse
 import re
 
@@ -27,18 +26,17 @@ def get_args():
         args.text = open(args.text, "r", encoding="utf-8").read()
     return args
 
+
 def fry(word):
-    match = re.search(r'(.+)ing$', word)
-    if match is not None:
-        first = match.group(1)
-        match = re.search('[aeiouy]', first.lower())
-        if match is not None:
+    """Drop 'g' from '-ing' words, change 'you' to 'y'all'"""
+    ing_match = re.search(r'(.+)ing$', word)
+    you_match = re.match(r'([yY])ou$', word)
+    if ing_match:
+        first = ing_match.group(1)
+        if re.search('[aeiouy]', first, re.IGNORECASE):
             return first + "in'"
-        else:
-            return word
-    match = re.match(r'([yY])ou$', word)
-    if match is not None:
-        return match.group(1) + "'all"
+    elif you_match:
+        return you_match.group(1) + "'all"
     return word
 
 
@@ -54,8 +52,10 @@ def main():
     """Main program"""
 
     args = get_args()
+    splitter = re.compile(r'(\W+)')
     for line in args.text.splitlines():
-        print(''.join(map(fry, re.split(r'(\W+)', line.rstrip()))))
+        print(''.join(map(fry, splitter.split(line.rstrip()))))
+
 
 if __name__ == '__main__':
     main()
