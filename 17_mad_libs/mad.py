@@ -19,7 +19,7 @@ def get_args():
 
     parser.add_argument('-i',
                         '--inputs',
-                        nargs='+',
+                        nargs='*',
                         default='',
                         type=str,
                         help='Input strings (for testing)',
@@ -27,6 +27,7 @@ def get_args():
 
     parser.add_argument('file',
                         help='Input file',
+                        type=argparse.FileType('rt'),
                         metavar='FILE')
 
     return parser.parse_args()
@@ -36,14 +37,14 @@ def main():
     """Main program"""
 
     args = get_args()
-    text = open(args.file, "r", encoding="utf-8").read().rstrip()
+    text = args.file.read().rstrip()
     pattern = re.compile(r'(<([^<>]+)>)')
     matches = re.findall(pattern, text)
     if not matches:
-        sys.exit(f'"{args.file}" has no placeholders.')
+        sys.exit(f'"{args.file.name}" has no placeholders.')
     if not args.inputs:
         args.inputs = []
-        for placeholder, name in matches:
+        for _, name in matches:
             article = 'an' if name[0].lower() in 'aeiou' else 'a'
             args.inputs.append(input(f'Give me {article} {name}: '))
     for replacement in args.inputs:
