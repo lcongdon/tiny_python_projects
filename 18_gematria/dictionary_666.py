@@ -42,10 +42,10 @@ def main():
     args = get_args()
     found = False
     for line in args.text.splitlines():
-        for word in line.split():
-            if word2num(word) == '666':
-                print(word)
-                found = True
+        matches = filter(lambda x: word2num(x) == '666', line.split())
+        for word in matches: 
+            found = True
+            print(word)
     if not found:
         sys.exit(1)
 
