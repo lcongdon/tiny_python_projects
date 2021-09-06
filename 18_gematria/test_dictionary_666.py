@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""tests for 666_dictionary.py"""
+"""tests for dictionary_666.py"""
 
 import os
 import pytest
@@ -10,15 +10,15 @@ class Test666Dictionary:
     @pytest.fixture
     def program_name(self):
         """Name of program under test"""
-        return "./666_dictionary.py"
+        return "./dictionary_666.py"
 
     @pytest.fixture
     def dictionary_found(self):
-        return "./test_666_dictionary_found.txt"
+        return "./test_dictionary_666_found.txt"
 
     @pytest.fixture
     def dictionary_not_found(self):
-        return "./test_666_dictionary_not_found.txt"
+        return "./test_dictionary_666_not_found.txt"
 
     def test_exists(self, program_name):
         """exists"""
