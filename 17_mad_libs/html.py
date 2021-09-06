@@ -14,7 +14,7 @@ def get_args():
     """Parse arguments"""
 
     parser = argparse.ArgumentParser(
-        description='Mad Libs',
+        description='HTML tag printer',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('file',
