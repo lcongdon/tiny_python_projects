@@ -2,11 +2,10 @@
 """
 Author : Lee A. Congdon <lee@lcongdon.com>
 Date   : 2021-09-06
-Purpose: Tiny Python Projects find 666 words
+Purpose: Tiny Python Projects number assignment frequency
 """
 
 import os
-import sys
 import argparse
 import re
 
@@ -15,7 +14,7 @@ def get_args():
     """Parse arguments"""
 
     parser = argparse.ArgumentParser(
-        description='Find 666 words',
+        description='Assign numbers to words',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('text',
@@ -40,14 +39,28 @@ def main():
     """Main program"""
 
     args = get_args()
-    found = False
+    words = dict()
+    counts = dict()
+    max_count = 0
     for line in args.text.splitlines():
-        for word in line.split():
-            if word2num(word) == '666':
-                found = True
-                print(word)
-    if not found:
-        sys.exit(1)
+        for word in re.split(r'\W+',line):
+            key = word2num(word)
+            if key in words:
+                words[key].add(word)
+            else:
+                words[key] = set(word.split())
+            if key in counts:
+                counts[key] += 1
+            else:
+                counts[key] = 1
+            if counts[key] > max_count:
+                max_count = counts[key]
+    for key in counts:
+        if counts[key] >= max_count:
+            print(f'Total occurences: {counts[key]}')
+            for element in words[key]:
+                print(element)
+
 
 if __name__ == '__main__':
     main()
