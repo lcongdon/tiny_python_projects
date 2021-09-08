@@ -54,7 +54,7 @@ def get_args() -> Args:
     parser.add_argument('-p',
                         '--purpose',
                         type=str,
-                        default=defaults.get('purpose', 'Rock the Casbah'),
+                        default=defaults.get('purpose', 'Python program'),
                         help='Purpose for docstring')
 
     parser.add_argument('-f',
