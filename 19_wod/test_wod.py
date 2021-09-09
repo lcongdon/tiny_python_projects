@@ -133,6 +133,63 @@ Squatting Chinups      35
 
 
 # --------------------------------------------------
+def test_bad_tablefmt():
+    """Dies on bad --tablefmt"""
+
+    bad = 'badformat'
+    rv, out = getstatusoutput(f'{prg} -tf {bad}')
+    assert rv != 0
+    assert re.search(f"argument -tf/--tablefmt: invalid choice: '{bad}'", out)
+
+# --------------------------------------------------
+
+
+def test_seed2_num8_tablefmt_plain():
+    """Runs OK, plain formatting"""
+
+    expected = """
+Exercise              Reps
+Burpees                 39
+Situps                  42
+Crunches                29
+Pushups                 68
+Plank                   35
+Hand-stand pushups      18
+Pullups                 30
+Lunges                  32
+"""
+
+    seed_flag = '-s' if random.choice([0, 1]) else '--seed'
+    num_flag = '-n' if random.choice([0, 1]) else '--num'
+    format_flag = '-tf' if random.choice([0, 1]) else '--tablefmt'
+    cmd = f'{prg} {num_flag} 8 {seed_flag} 2 -f {input1} {format_flag} plain'
+    rv, out = getstatusoutput(cmd)
+    assert rv == 0
+    assert out.strip() == expected.strip()
+
+
+# --------------------------------------------------
+def test_seed4_num3_input2_tablefmt_github():
+    """Runs OK, github formatting"""
+
+    expected = """
+| Exercise          |   Reps |
+|-------------------|--------|
+| Hanging Chads     |     86 |
+| Red Barchettas    |     50 |
+| Squatting Chinups |     35 |
+"""
+
+    seed_flag = '-s' if random.choice([0, 1]) else '--seed'
+    num_flag = '-n' if random.choice([0, 1]) else '--num'
+    format_flag = '-tf' if random.choice([0, 1]) else '--tablefmt'
+    rv, out = getstatusoutput(
+        f'{prg} {num_flag} 3 {seed_flag} 4 -f {input2} {format_flag} github')
+    assert rv == 0
+    assert out.strip() == expected.strip()
+
+
+# --------------------------------------------------
 def random_string():
     """generate a random string"""
 
