@@ -81,9 +81,16 @@ def ransom(word):
 
 
 def l33t(password):
+    """Transform a fraction of password with character substitutions"""
     mapping = {'a': '@', 'A': '4', 'O': '0',
                't': '+', 'E': '3', 'I': '1', 'S': '5'}
-    return ''.join([mapping.get(char, char) for char in ransom(password)]) + random.choice(string.punctuation)
+    fraction_to_change = 0.1
+    len_password = len(password)
+    num_changes = round(fraction_to_change * len_password)
+    new_password = list(ransom(password))
+    for i in random.sample(range(len_password), num_changes):
+        new_password[i] = mapping.get(new_password[i], new_password[i])
+    return ''.join(new_password) + random.choice(string.punctuation)
 
 
 def main():

@@ -154,8 +154,8 @@ def test_l33t():
     rv, out = getstatusoutput(f'{prg} -s 1 -l {words}')
     assert rv == 0
     assert out.strip() == '\n'.join([
-        'DUn1Teb0onloCiDef4T/', 'Weg4TiTm@LuNPl4T54+1r3_',
-        'iD3@Ncl1P5v1+14rrie+/'
+        r'DUnITeb0onloCiDef4T[', r'weGAt1tmAlUNpLATSaTiR3''\\',
+        r'IdEanCLIpSv1TiarrieT['
     ])
 
 
