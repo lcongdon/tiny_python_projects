@@ -29,5 +29,5 @@ def test_l33t():
     state = random.getstate()
     random.seed(1)
     assert l33t('Money') == 'moNeY{'
-    assert l33t('Dollars') == 'D0ll4r5`'
+    assert l33t('Dollars') == 'DOllArS!'
     random.setstate(state)
