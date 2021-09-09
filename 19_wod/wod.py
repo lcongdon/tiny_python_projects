@@ -54,27 +54,14 @@ def get_args():
 
     table_formats = ("plain",
                      "simple",
-                     "github",
                      "grid",
-                     "fancy_grid",
                      "pipe",
                      "orgtbl",
-                     "jira",
-                     "presto",
-                     "pretty",
-                     "psql",
                      "rst",
                      "mediawiki",
-                     "moinmoin",
-                     "youtrack",
-                     "html",
-                     "unsafehtml",
                      "latex",
                      "latex_raw",
-                     "latex_booktabs",
-                     "latex_longtable",
-                     "textile",
-                     "tsv")
+                     "latex_booktabs")
 
     parser.add_argument('-tf',
                         '--tablefmt',
