@@ -6,6 +6,7 @@ Purpose: Tiny Python Projects create workout of the day exercise
 """
 
 import sys
+import pathlib
 import argparse
 import csv
 import random
@@ -44,17 +45,27 @@ def get_args():
                         default=False,
                         action='store_true',
                         help='Halve the reps')
+    
+    parser.add_argument('-t',
+                        '--tab',
+                        default=False,
+                        action='store_true',
+                        help='Tab delimiter in exercises')
 
     args = parser.parse_args()
     if(args.num <= 0):
         parser.error(f'--num "{args.num}" must be greater than 0')
+    args.delimiter = '\t' if args.tab else ','
+    p = pathlib.Path(args.file.name)
+    if (p.suffix == '.tab'):
+        args.delimiter = '\t'
     return args
 
 
-def read_csv(fh):
+def read_csv(fh, delimiter=','):
     """Read the CSV input"""
     exercises = []
-    for rec in csv.DictReader(fh, delimiter=','):
+    for rec in csv.DictReader(fh, delimiter=delimiter):
         if 'exercise' not in rec or 'reps' not in rec:
             continue
         name, reps = rec['exercise'], rec['reps']
@@ -74,7 +85,7 @@ def main():
 
     args = get_args()
     random.seed(args.seed)
-    exercises = read_csv(args.file)
+    exercises = read_csv(args.file, args.delimiter)
 
     if not exercises:
         sys.exit(f'No usable data in --file "{args.file.name}"')
