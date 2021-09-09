@@ -52,6 +52,36 @@ def get_args():
                         action='store_true',
                         help='Tab delimiter in exercises')
 
+    table_formats = ("plain",
+                     "simple",
+                     "github",
+                     "grid",
+                     "fancy_grid",
+                     "pipe",
+                     "orgtbl",
+                     "jira",
+                     "presto",
+                     "pretty",
+                     "psql",
+                     "rst",
+                     "mediawiki",
+                     "moinmoin",
+                     "youtrack",
+                     "html",
+                     "unsafehtml",
+                     "latex",
+                     "latex_raw",
+                     "latex_booktabs",
+                     "latex_longtable",
+                     "textile",
+                     "tsv")
+
+    parser.add_argument('-tf',
+                        '--tablefmt',
+                        default='simple',
+                        choices=table_formats,
+                        help='Output formatting')                
+
     args = parser.parse_args()
     if(args.num <= 0):
         parser.error(f'--num "{args.num}" must be greater than 0')
@@ -100,7 +130,7 @@ def main():
         if args.easy:
             reps = int(reps/2)
         workout.append((name, reps))
-    print(tabulate(workout, headers=('Exercise', 'Reps')))
+    print(tabulate(workout, headers=('Exercise', 'Reps'), tablefmt=args.tablefmt))
 
 
 if __name__ == '__main__':
