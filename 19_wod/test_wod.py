@@ -209,18 +209,22 @@ def test_seed4_num3_input2_tablefmt_github():
     """Runs OK, github formatting"""
 
     expected = """
++-------------------+--------+
 | Exercise          |   Reps |
-|-------------------|--------|
++===================+========+
 | Hanging Chads     |     86 |
++-------------------+--------+
 | Red Barchettas    |     50 |
++-------------------+--------+
 | Squatting Chinups |     35 |
++-------------------+--------+
 """
 
     seed_flag = '-s' if random.choice([0, 1]) else '--seed'
     num_flag = '-n' if random.choice([0, 1]) else '--num'
     format_flag = '-tf' if random.choice([0, 1]) else '--tablefmt'
     rv, out = getstatusoutput(
-        f'{prg} {num_flag} 3 {seed_flag} 4 -f {input2} {format_flag} github')
+        f'{prg} {num_flag} 3 {seed_flag} 4 -f {input2} {format_flag} grid')
     assert rv == 0
     assert out.strip() == expected.strip()
 
