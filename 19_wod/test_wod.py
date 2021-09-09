@@ -8,6 +8,7 @@ import string
 from subprocess import getstatusoutput
 
 prg = './wod.py'
+tab = 'inputs/bad-delimiter.tab'
 input1 = 'inputs/exercises.csv'
 input2 = 'inputs/silly-exercises.csv'
 
@@ -47,6 +48,41 @@ def test_bad_file():
     rv, out = getstatusoutput(f'{prg} -f {bad}')
     assert rv != 0
     assert re.search(f"No such file or directory: '{bad}'", out)
+
+
+# --------------------------------------------------
+def test_tab_delimiter():
+    """tab delimiter"""
+
+    expected = """
+Exercise      Reps
+----------  ------
+Pushups         56
+Situps          88
+Crunches        27
+Burpees         35
+"""
+    tab_flag = '-t' if random.choice([0, 1]) else '--tab'
+    rv, out = getstatusoutput(f'{prg} -f {tab} -s 1 {tab_flag}')
+    assert rv == 0
+    assert out.strip() == expected.strip()
+
+
+# --------------------------------------------------
+def test_tab_delimiter_extension():
+    """tab delimiter based on file extension"""
+
+    expected = """
+Exercise      Reps
+----------  ------
+Pushups         56
+Situps          88
+Crunches        27
+Burpees         35
+"""
+    rv, out = getstatusoutput(f'{prg} -f {tab} -s 1')
+    assert rv == 0
+    assert out.strip() == expected.strip()
 
 
 # --------------------------------------------------
